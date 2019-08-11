@@ -222,17 +222,20 @@ func UserDelete(ctx *gin.Context) {
 
 // UserLogin 用户登录
 func UserLogin(ctx *gin.Context) {
+
 	// UserLoginRet 用户登录后返回信息
 	type UserLoginRet struct {
 		Token string `json:"token"`
 		Name  string `json:"name"`
 	}
+
 	var (
 		user     UserPostForm
 		u        User
 		token    string
 		loginRet UserLoginRet
 	)
+
 	err := ctx.BindJSON(&user)
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
@@ -245,6 +248,7 @@ func UserLogin(ctx *gin.Context) {
 	// 校验密码
 	encryptPassword, _ := encrypt.AesEncryptString([]byte(user.Password), []byte(glo.Config.GopsAPI.EncryptKey))
 	_, err = u.checkUserPassword(user.UserName, encryptPassword)
+
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.ERROR,
@@ -256,7 +260,10 @@ func UserLogin(ctx *gin.Context) {
 	nickname, err := u.findUserNickname(user.UserName)
 	// JWT middleware生成token
 	token, err = util.GenerateToken(user.UserName, nickname)
+
+	// 打印用户信息
 	// fmt.Println(user.UserName, nickname, token)
+
 	// // 生成token, 旧方式
 	// token = comfunc.EncryptToken(user.UserName, time.Now().Unix(), glo.Config.GopsAPI.EncryptKey)
 	// // 设置token缓存

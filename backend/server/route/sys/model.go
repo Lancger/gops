@@ -11,7 +11,7 @@ import (
 
 // User 用户表结构体
 type User struct {
-	// ID       int    `gorm:"type:int(10);primary_key;column:id;AUTO_INCREMENT;"`
+	// ID           int           `gorm:"type:int(10);primary_key;column:id;AUTO_INCREMENT;"`
 	UserName     string        `gorm:"type:varchar(32);unique;not null;column:username"`
 	NickName     string        `gorm:"type:varchar(32);unique;not null;column:nick_name"`
 	Password     string        `gorm:"type:varchar(64);column:password"`
@@ -198,6 +198,7 @@ func (u User) findUserInfo(username string) (err error) {
 	}
 	return
 }
+
 func (u User) checkUserExists(username string) (status bool, err error) {
 	var count int
 	err = glo.Db.Model(&User{}).Where(&User{UserName: username}).Count(&count).Error
@@ -225,6 +226,7 @@ func (u User) checkUserPassword(username string, password string) (status bool, 
 	}
 	return true, nil
 }
+
 func (u User) findUserNickname(username string) (nickname string, err error) {
 	err = nil
 	var (
