@@ -26,7 +26,3 @@ gops_api:
   alert:
     # 告警消息通知最大队列数
     alert_chan: 1024
-  ticket:
-    details: "http://localhost:9528/#/ticket/TicketMsg?id="
-    cloud_ticket_url : "http://ticket.test.net:8001/#/ticket/ticket_details?id="
-    sla_process_alert: 80
