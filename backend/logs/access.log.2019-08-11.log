@@ -1,0 +1,3 @@
+{"code":200,"ip":"127.0.0.1","level":"info","method":"POST","ms":237,"msg":"OK","time":"2019-08-11T17:19:38+08:00","uri":"/InitTable"}
+{"code":200,"ip":"127.0.0.1","level":"info","method":"POST","ms":0,"msg":"OK","time":"2019-08-11T20:50:33+08:00","uri":"/sys/InitTable"}
+{"code":200,"ip":"127.0.0.1","level":"info","method":"POST","ms":4,"msg":"OK","time":"2019-08-11T20:52:29+08:00","uri":"/InitTable"}

@@ -1,0 +1,32 @@
+gops_api:
+  port: 335
+  encrypt_key: '234561u9y8d2fwfl'
+  enable: true
+  max_request: 0
+  deadline: 86400
+  server_port: 9000
+  database:
+    dialect: mysql
+    addr: root:123456@tcp(127.0.0.1:3306)/gops?charset=utf8&parseTime=true&loc=Local
+    automigrate:
+  redis:
+    max_idle: 5
+    idle_timeout_sec: 300
+    expried_sec: 86400
+    addr: '127.0.0.1:6379'
+    password: ""
+    expried: 86400
+    loop_sec: 120
+  log:
+    mode: "prod"
+    path: "./logs/"
+  notify:
+    dingding:
+      api: "http://mbd.oa.com/api/v1/send/"
+  alert:
+    # 告警消息通知最大队列数
+    alert_chan: 1024
+  ticket:
+    details: "http://localhost:9528/#/ticket/TicketMsg?id="
+    cloud_ticket_url : "http://ticket.test.net:8001/#/ticket/ticket_details?id="
+    sla_process_alert: 80
