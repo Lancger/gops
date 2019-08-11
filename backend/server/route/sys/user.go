@@ -281,7 +281,7 @@ func UserLogin(ctx *gin.Context) {
 	}
 }
 
-// UserLogout 用户登录
+// UserLogout 用户登出
 func UserLogout(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"code":    e.SUCCESS,

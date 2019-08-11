@@ -6,8 +6,6 @@ import (
 	"gops/backend/pkg/util"
 	"log"
 
-	// "gops/backend/server/route/ticket"
-
 	"github.com/jinzhu/gorm"
 )
 
