@@ -19,6 +19,7 @@ func DbConnect() {
 	}
 	// 数据库日志调试
 	// db.LogMode(true)
+
 	Db = db.Set("gorm:table_options", "charset=utf8")
 }
 

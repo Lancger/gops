@@ -146,8 +146,11 @@ func UserList(ctx *gin.Context) {
 		username string
 		total    int
 	)
-	// 设置查询用户名
-	username = ctx.Query("username")
+	// 设置查询用户名(获取从前端传过来的参数)
+	username = ctx.Query("search")
+
+	fmt.Println(username)
+
 	if username != `` {
 		// 根据username模糊查询，可以将gorm链接添加条件后，赋值覆盖自身，得到不定条件的链式查询效果
 		userQueryDb = userQueryDb.Where("username LIKE ?", fmt.Sprintf("%%%s%%", username))
