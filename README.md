@@ -26,4 +26,22 @@ X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwibmlja2
 
 #获取用户列表
 http://localhost:9000/sys/UserList?page_size=100&current_page=1
+
+#新增用户
+http://localhost:9000/sys/UserAdd
+
+{
+    "username": "cese",
+    "password": "123456",
+    "nick_name": "测试",
+    "email": "1151980610@qq.com",
+    "phone": "1832091411"
+}
+
+#删除用户
+http://localhost:9000/sys/UserDelete
+{
+    "id": 2
+}
+
 ```

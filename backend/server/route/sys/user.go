@@ -1,6 +1,7 @@
 package sys
 
 import (
+	"encoding/json"
 	"fmt"
 	"gops/backend/glo"
 	"gops/backend/glo/comfunc"
@@ -45,10 +46,22 @@ func InitTable(ctx *gin.Context) {
 // UserAdd 添加用户信息
 func UserAdd(ctx *gin.Context) {
 	var (
-		user UserPostForm
+		user UserPostForm //定义一个结构体存放前端post参数
 		u    User
 	)
+
 	err := ctx.BindJSON(&user)
+
+	// 将结构体转换为json字符串,不然默认的只会打印出values值
+	jsonuser, err1 := json.Marshal(user)
+
+	if err1 != nil {
+		fmt.Println("生成json字符串错误")
+	}
+
+	//jsonuser[]byte类型，转化成string类型便于查看
+	fmt.Println(string(jsonuser))
+
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.SUCCESS,
@@ -56,6 +69,7 @@ func UserAdd(ctx *gin.Context) {
 		})
 		return
 	}
+
 	if err := u.findUserInfo(user.UserName); err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.NOCONTENT,
@@ -67,6 +81,7 @@ func UserAdd(ctx *gin.Context) {
 	if user.Password == `` {
 		user.Password = comfunc.DefaultPassword
 	}
+
 	encryptPassword, _ := encrypt.AesEncryptString([]byte(user.Password), []byte(glo.Config.GopsAPI.EncryptKey))
 	// 映射POST数据到用户结构体
 	insertData := &User{
@@ -155,6 +170,7 @@ func UserList(ctx *gin.Context) {
 		// 根据username模糊查询，可以将gorm链接添加条件后，赋值覆盖自身，得到不定条件的链式查询效果
 		userQueryDb = userQueryDb.Where("username LIKE ?", fmt.Sprintf("%%%s%%", username))
 	}
+	// page为页数，这里利用Offset后端分页
 	if err := userQueryDb.Offset((page - 1) * pageSize).Limit(pageSize).Order("id desc").Find(&querySet).Count(&total).Error; err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.ERROR,
@@ -200,7 +216,13 @@ func UserDelete(ctx *gin.Context) {
 		ID int `json:"id"`
 	}
 	var reqData requestPost
+
 	err := ctx.BindJSON(&reqData)
+
+	// 将结构体转换为json字符串,不然默认的只会打印出values值
+	m, _ := json.Marshal(reqData)
+	fmt.Println(string(m))
+
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.ERROR,
