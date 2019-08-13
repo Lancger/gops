@@ -14,21 +14,21 @@ insert into User(`id`, `username`, `nick_name`, `email`, `phone`, `password`, `c
 
 # 三、postman测试
 ```
-#获取token
-http://localhost:9000/UserLogin
+1、#获取token
+POST  http://localhost:9000/UserLogin
 {
 	"username": "admin",
 	"password": "admin"
 }
 
-#设置header
+2、#设置header
 X-Token: eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJ1c2VybmFtZSI6ImFkbWluIiwibmlja25hbWUiOiLns7vnu5_nrqHnkIblkZgiLCJleHAiOjE1NjU2ODIwMjUsImlzcyI6Imp3dC1nbyJ9.8eRsFNf_21FdI7N-EhGZFeCe0HLQyw3zGFKL2tFj7kg
 
-#获取用户列表
-http://localhost:9000/sys/UserList?page_size=100&current_page=1
+3、#获取用户列表
+GET  http://localhost:9000/sys/UserList?page_size=100&current_page=1
 
-#新增用户
-http://localhost:9000/sys/UserAdd
+4、#新增用户
+POST  http://localhost:9000/sys/UserAdd
 
 {
     "username": "cese",
@@ -38,10 +38,36 @@ http://localhost:9000/sys/UserAdd
     "phone": "1832091411"
 }
 
-#删除用户
-http://localhost:9000/sys/UserDelete
+5、#删除用户
+POST  http://localhost:9000/sys/UserDelete
 {
     "id": 2
 }
 
+6、#根据token解析用户信息和权限
+GET  http://localhost:9000/sys/AccountInfo
+
+
+7、#查询用户表，获取所有用户的中文名字和英文名字
+GET  http://localhost:9000/sys/UserOptions
+
+测试结果
+{
+    "code": 20000,
+    "data": [
+        {
+            "nickname": "系统管理员",
+            "username": "admin"
+        },
+        {
+            "nickname": "测试1",
+            "username": "cese1"
+        },
+        {
+            "nickname": "测试2",
+            "username": "cese2"
+        }
+    ],
+    "message": "请求成功"
+}
 ```

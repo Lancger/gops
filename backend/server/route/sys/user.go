@@ -20,7 +20,7 @@ import (
 // 路由函数
 // ////////////////////////////////////////////////////////////////////////////////////////////////////////
 
-// InitTable 初始化表结构
+// InitTable 初始化表结构  --OK
 func InitTable(ctx *gin.Context) {
 	if !glo.Db.HasTable(&User{}) {
 		if err := glo.Db.Set("gorm:table_options", "ENGINE=InnoDB").CreateTable(&User{}).Error; err != nil {
@@ -43,7 +43,7 @@ func InitTable(ctx *gin.Context) {
 	})
 }
 
-// UserAdd 添加用户信息
+// UserAdd 添加用户信息  --OK
 func UserAdd(ctx *gin.Context) {
 	var (
 		user UserPostForm //定义一个结构体存放前端post参数
@@ -105,7 +105,7 @@ func UserAdd(ctx *gin.Context) {
 	return
 }
 
-// UserUpdate 更新用户信息
+// UserUpdate 更新用户信息  --OK
 func UserUpdate(ctx *gin.Context) {
 	var (
 		user UserPostForm
@@ -146,7 +146,7 @@ func UserUpdate(ctx *gin.Context) {
 	return
 }
 
-// UserList 获取用户列表
+// UserList 获取用户列表  --OK
 func UserList(ctx *gin.Context) {
 	// 初始化请求参数变量
 	pageSize, _ := strconv.Atoi(ctx.Query("page_size"))
@@ -210,7 +210,7 @@ func UserList(ctx *gin.Context) {
 	return
 }
 
-// UserDelete 删除用户
+// UserDelete 删除用户  --OK
 func UserDelete(ctx *gin.Context) {
 	type requestPost struct {
 		ID int `json:"id"`
@@ -231,7 +231,8 @@ func UserDelete(ctx *gin.Context) {
 		return
 	}
 	// Unscoped 永久删除，否则gin只会软删除
-	if err = glo.Db.Table("User").Where("id = ?", reqData.ID).Unscoped().Delete(User{}).Error; err != nil {
+	// &User{} 后面接{},是因为需要先对它进行实例化，分配到了内存，才可以取地址
+	if err = glo.Db.Table("User").Where("id = ?", reqData.ID).Unscoped().Delete(&User{}).Error; err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.ERROR,
 			"message": "删除失败",
@@ -245,7 +246,7 @@ func UserDelete(ctx *gin.Context) {
 	return
 }
 
-// UserLogin 用户登录
+// UserLogin 用户登录  --OK
 func UserLogin(ctx *gin.Context) {
 
 	// UserLoginRet 用户登录后返回信息
@@ -313,7 +314,7 @@ func UserLogin(ctx *gin.Context) {
 	}
 }
 
-// UserLogout 用户登出
+// UserLogout 用户登出  --OK
 func UserLogout(ctx *gin.Context) {
 	ctx.JSON(http.StatusOK, gin.H{
 		"code":    e.SUCCESS,
@@ -321,19 +322,18 @@ func UserLogout(ctx *gin.Context) {
 	})
 }
 
-// AccountInfo 用户信息
+// AccountInfo 用户信息  --OK
 func AccountInfo(ctx *gin.Context) {
 	accountMsg := AccountMsg{
 		Name:     "nil",
 		NickName: "nil",
-		Roles:    []string{},
-		Perms:    []string{},
+		Roles:    []string{}, //{}实例化切片
+		Perms:    []string{}, //{}实例化切片
 		Avatar:   setting.Avatar,
 	}
 	var (
 		u User
 	)
-
 	token := ctx.GetHeader("X-Token")
 	if token == `` {
 		ctx.JSON(http.StatusOK, gin.H{
@@ -344,6 +344,8 @@ func AccountInfo(ctx *gin.Context) {
 		return
 	}
 	claims, err := util.ParseToken(token)
+	fmt.Println("打印token")
+	fmt.Println(claims)
 
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
@@ -370,7 +372,7 @@ func AccountInfo(ctx *gin.Context) {
 	return
 }
 
-// UserMsg 获取简单的全部用户信息
+// UserMsg 获取简单的全部用户信息  --OK
 func UserMsg(ctx *gin.Context) {
 	var userArr []UserMsgSim
 	userQueryDb := glo.Db
@@ -391,14 +393,14 @@ func UserMsg(ctx *gin.Context) {
 	return
 }
 
-// UserOptions 获取用户组信息
+// UserOptions 获取用户组信息  --OK(获取所有用户的信息，然后取其中的中文名字和英文名字)
 func UserOptions(ctx *gin.Context) {
 	var (
 		us      []User
 		retData []map[string]interface{}
 	)
 
-	err := glo.Db.Find(&us).Error
+	err := glo.Db.Find(&us).Error //us 在Find的时候绑定了
 	if err != nil {
 		ctx.JSON(http.StatusOK, gin.H{
 			"code":    e.ERROR,

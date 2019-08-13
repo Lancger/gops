@@ -33,7 +33,7 @@ func InitRoute(engine *gin.Engine) {
 		sysAPI.POST("/UserDelete", UserDelete)
 		sysAPI.GET("/AccountInfo", AccountInfo)
 		sysAPI.GET("/UserMsg", UserMsg)
-		sysAPI.GET("/UserOptions", UserOptions)
+		sysAPI.GET("/UserOptions", UserOptions) //获取所有用户的中文名和英文名
 
 		sysAPI.GET("/GroupList", GroupList)
 		sysAPI.POST("/GroupAdd", GroupAdd)
